@@ -15,6 +15,7 @@ jobs:
         with:
           name: services
           path: dist/
+          repository: HotCoffeeBean/service-repo
 
       - name: Build docker-compose
         run: docker-compose build
