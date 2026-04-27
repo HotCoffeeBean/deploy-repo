@@ -2,7 +2,6 @@ name: Build Docker Compose
 
 on:
   repository_dispatch:
-    types: [build_completed]
 
 jobs:
   docker:
