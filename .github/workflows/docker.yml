@@ -2,6 +2,7 @@ name: Build Docker Compose
 
 on:
   repository_dispatch:
+    types: [build_completed]
 
 jobs:
   docker:
@@ -9,13 +10,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-
-      - name: Download artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: services
-          path: dist/
-          repository: HotCoffeeBean/service-repo
 
       - name: Build docker-compose
         run: docker-compose build
