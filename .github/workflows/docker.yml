@@ -19,3 +19,12 @@ jobs:
 
       - name: Save images
         run: docker save user_service:latest survey_service:latest response_service:latest aggregator_service:latest > images.tar
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: docker-image
+          path: images.tar
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: docker-image
