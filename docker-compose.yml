@@ -1,0 +1,37 @@
+version: '3.9'
+
+services:
+  user-service:
+    build: ./user_service
+    ports:
+      - "5001:5000"
+    depends_on:
+      - db
+
+  survey-service:
+    build: ./survey_service
+    ports:
+      - "5002:5000"
+    depends_on:
+      - db
+
+  response-service:
+    build: ./response_service
+    ports:
+      - "5003:5000"
+    depends_on:
+      - db
+
+  aggregator-service:
+    build: ./aggregator_service
+    ports:
+      - "5004:5000"
+
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: surveys
+    ports:
+      - "5432:5432"

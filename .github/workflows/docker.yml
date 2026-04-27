@@ -1,0 +1,41 @@
+name: Build Docker Compose
+
+on:
+  repository_dispatch:
+    types: [build_completed]
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download artifacts
+        run: |
+          curl -L \
+          -H "Authorization: Bearer ${{ secrets.PAT_TOKEN }}" \
+          https://api.github.com/repos/HotCoffeeBean/service-repo/actions/artifacts \
+          -o artifacts.json
+
+          ARTIFACT_ID=$(jq '.artifacts[0].id' artifacts.json)
+
+          curl -L \
+          -H "Authorization: Bearer ${{ secrets.PAT_TOKEN }}" \
+          -o artifact.zip \
+          https://api.github.com/repos/HotCoffeeBean/service-repo/actions/artifacts/$ARTIFACT_ID/zip
+
+          unzip artifact.zip
+
+      - name: Copy services into build context
+        run: |
+          cp -r dist/user_service ./user_service/
+          cp -r dist/survey_service ./survey_service/
+          cp -r dist/response_service ./response_service/
+          cp -r dist/aggregator_service ./aggregator_service/
+
+      - name: Build docker-compose
+        run: docker-compose build
+
+      - name: Run services (test)
+        run: docker-compose up -d
