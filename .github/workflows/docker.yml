@@ -16,3 +16,6 @@ jobs:
 
       - name: Run services (test)
         run: docker compose up -d
+
+      - name: Save images
+        run: docker save user_service:latest survey_service:latest response_service:latest aggregator_service:latest > images.tar

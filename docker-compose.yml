@@ -7,6 +7,7 @@ services:
       - "5001:5000"
     depends_on:
       - db
+    image: user_service
 
   survey-service:
     build: ./survey_service
@@ -14,6 +15,7 @@ services:
       - "5002:5000"
     depends_on:
       - db
+    image: survey_service
 
   response-service:
     build: ./response_service
@@ -21,11 +23,13 @@ services:
       - "5003:5000"
     depends_on:
       - db
+    image: response_service
 
   aggregator-service:
     build: ./aggregator_service
     ports:
       - "5004:5000"
+    image: aggregator_service
 
   db:
     image: postgres:15
